@@ -1,0 +1,8 @@
+server.port: 7701
+spring.application.name: product-service
+server.error.include-message: always
+
+logging:
+  level:
+    root: info
+    com.unewej: debug

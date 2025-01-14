@@ -1,0 +1,8 @@
+server.port: 7703
+spring.application.name: review-service
+server.error.include-message: always
+
+logging:
+  level:
+    root: info
+    com.unewej: debug

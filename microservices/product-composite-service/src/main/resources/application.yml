@@ -1,0 +1,19 @@
+server.port: 7700
+spring.application.name: product-composite-service
+server.error.include-message: always
+
+app:
+  product-service:
+    host: localhost
+    port: 7701
+  recommendation-service:
+    host: localhost
+    port: 7702
+  review-service:
+    host: localhost
+    port: 7703
+
+logging:
+  level:
+    root: info
+    com.unewej: debug
