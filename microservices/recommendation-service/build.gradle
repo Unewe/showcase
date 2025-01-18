@@ -17,6 +17,10 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+	enabled = false
+}
+
 dependencies {
 	implementation project(":mutual:api")
 	implementation project(":mutual:util")
