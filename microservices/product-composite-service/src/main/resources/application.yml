@@ -1,6 +1,41 @@
+springdoc:
+  swagger-ui.path: /openapi/swagger-ui.html
+  api-docs.path: /openapi/v3/api-docs
+  packages-to-scan: com.unewej.microservices.product.composite.service
+  paths-to-match: /**
+
+
+api:
+  common:
+    version: 1.0.0
+    title: Sceleton app
+    description: Simple sceleton yet
+    termsOfServices: Unewej
+    license: Unewej
+    licenseUrl: -TODO-
+    externalDocDesc: -TODO-
+    externalDocUrl: -TODO-
+    contact:
+      name: Unewej
+      url: -TODO-
+      email: Unewej@mail.ru
+
+  responseCodes:
+    ok.description: OK
+    badRequest.description: Bad Request, invalid format of the request. See response message for more information.
+    notFound.description: Not Found, the specified id does not exists.
+    unprocessableEntity.description: Unprocessable Entity. See response message for more information.
+
+  productComposite:
+    getProductComposite.description: Returns the composite product of the specified product id.
+    notes: |
+      Some notes...
+
+
 server.port: 7700
 spring.application.name: product-composite-service
 server.error.include-message: always
+
 
 app:
   product-service:
