@@ -2,6 +2,13 @@ server.port: 7701
 spring.application.name: product-service
 server.error.include-message: always
 
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/skeleton
+    username: postgres
+    password: postgres
+
 logging:
   level:
     root: info

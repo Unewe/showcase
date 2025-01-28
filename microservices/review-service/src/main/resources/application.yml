@@ -2,6 +2,12 @@ server.port: 7703
 spring.application.name: review-service
 server.error.include-message: always
 
+spring.data.mongodb:
+  host: localhost
+  port: 27017
+  database: skeleton
+  auto-index-creation: true
+
 logging:
   level:
     root: info

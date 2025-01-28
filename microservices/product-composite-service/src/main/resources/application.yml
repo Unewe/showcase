@@ -8,8 +8,8 @@ springdoc:
 api:
   common:
     version: 1.0.0
-    title: Sceleton app
-    description: Simple sceleton yet
+    title: Skeleton app
+    description: Simple skeleton yet
     termsOfServices: Unewej
     license: Unewej
     licenseUrl: -TODO-

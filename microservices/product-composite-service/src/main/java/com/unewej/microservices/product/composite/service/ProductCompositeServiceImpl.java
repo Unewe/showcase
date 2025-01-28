@@ -54,7 +54,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
                 ? List.of()
                 : reviews
                 .stream()
-                .map(r -> new ReviewSummary(r.getId(), r.getAuthor(), r.getSubject(), r.getContent()))
+                .map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent()))
                 .toList();
 
         String productAddress = product.getServiceAddress();
