@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Recommendation {
-    private final int id;
+    private final int recommendationId;
     private final int productId;
     private final String author;
     private final int rate;
@@ -12,7 +12,7 @@ public class Recommendation {
     private final String serviceAddress;
 
     public Recommendation() {
-        this.id = 0;
+        this.recommendationId = 0;
         this.productId = 0;
         this.author = null;
         this.rate = 0;
@@ -20,8 +20,8 @@ public class Recommendation {
         this.serviceAddress = null;
     }
 
-    public Recommendation(int id, int productId, String author, int rate, String content, String serviceAddress) {
-        this.id = id;
+    public Recommendation(int recommendationId, int productId, String author, int rate, String content, String serviceAddress) {
+        this.recommendationId = recommendationId;
         this.productId = productId;
         this.author = author;
         this.rate = rate;

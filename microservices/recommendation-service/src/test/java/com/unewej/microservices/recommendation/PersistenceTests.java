@@ -1,7 +1,7 @@
-package com.unewej.microservices.review;
+package com.unewej.microservices.recommendation;
 
-import com.unewej.microservices.review.service.persistence.ReviewEntity;
-import com.unewej.microservices.review.service.persistence.ReviewRepository;
+import com.unewej.microservices.recommendation.service.persistence.RecommendationEntity;
+import com.unewej.microservices.recommendation.service.persistence.RecommendationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,33 +20,33 @@ import java.util.stream.IntStream;
 @DataMongoTest
 public class PersistenceTests extends MongoDbTestBase {
     @Autowired
-    private ReviewRepository repository;
+    private RecommendationRepository repository;
 
-    private ReviewEntity savedEntity;
+    private RecommendationEntity savedEntity;
 
     @BeforeEach
     public void setupDb() {
         repository.deleteAll();
-        ReviewEntity entity = new ReviewEntity(1, 1, "1", "1", "1");
+        RecommendationEntity entity = new RecommendationEntity(1, 1,"1", 1, "1");
         savedEntity = repository.save(entity);
 
-        assertEqualsReview(entity, savedEntity);
+        assertEqualsRecommendation(entity, savedEntity);
     }
 
-    private void assertEqualsReview(ReviewEntity a, ReviewEntity b) {
-        Assertions.assertEquals(a.getReviewId(), b.getReviewId());
+    private void assertEqualsRecommendation(RecommendationEntity a, RecommendationEntity b) {
+        Assertions.assertEquals(a.getRecommendationId(), b.getRecommendationId());
         Assertions.assertEquals(a.getId(), b.getId());
-        Assertions.assertEquals(a.getSubject(), b.getSubject());
+        Assertions.assertEquals(a.getRate(), b.getRate());
         Assertions.assertEquals(a.getAuthor(), b.getAuthor());
         Assertions.assertEquals(a.getContent(), b.getContent());
     }
 
     @Test
     public void create() {
-        ReviewEntity entity = new ReviewEntity(2, 1, "2", "2", "2");
+        RecommendationEntity entity = new RecommendationEntity(2, 2,"2", 2, "2");
         repository.save(entity);
-        ReviewEntity saved = repository.findById(entity.getId()).get();
-        assertEqualsReview(entity, saved);
+        RecommendationEntity saved = repository.findById(entity.getId()).get();
+        assertEqualsRecommendation(entity, saved);
 
         Assertions.assertEquals(2, repository.count());
     }
@@ -55,10 +55,10 @@ public class PersistenceTests extends MongoDbTestBase {
     public void update() {
         savedEntity.setContent("newContent");
         repository.save(savedEntity);
-        ReviewEntity foundEntity = repository.findById(savedEntity.getId()).get();
+        RecommendationEntity foundEntity = repository.findById(savedEntity.getId()).get();
 
         Assertions.assertEquals(1, foundEntity.getVersion());
-        assertEqualsReview(savedEntity, foundEntity);
+        assertEqualsRecommendation(savedEntity, foundEntity);
     }
 
     @Test
@@ -71,14 +71,14 @@ public class PersistenceTests extends MongoDbTestBase {
     public void findByProductId() {
         var reviews = repository.findByProductId(savedEntity.getProductId());
         Assertions.assertEquals(1, reviews.size());
-        assertEqualsReview(savedEntity, reviews.get(0));
+        assertEqualsRecommendation(savedEntity, reviews.get(0));
     }
 
     @Test
     public void duplicateError() {
         Assertions.assertThrows(DuplicateKeyException.class, () -> {
-            var review = new ReviewEntity(savedEntity.getReviewId(), 1, "1", "1", "1");
-            repository.save(review);
+            var recommendation = new RecommendationEntity(savedEntity.getRecommendationId(), 1, "1", 1, "1");
+            repository.save(recommendation);
         });
     }
 
@@ -86,20 +86,20 @@ public class PersistenceTests extends MongoDbTestBase {
     public void paging() {
         repository.deleteAll();
 
-        List<ReviewEntity> newReviews = IntStream.rangeClosed(1001, 1010)
-                .mapToObj((i) -> new ReviewEntity(i, 1, "1", "1", String.valueOf(i)))
+        List<RecommendationEntity> newReviews = IntStream.rangeClosed(1001, 1010)
+                .mapToObj((i) -> new RecommendationEntity(i, 1, "1", 1, String.valueOf(i)))
                 .toList();
 
         repository.saveAll(newReviews);
-        Pageable nextPage = PageRequest.of(0, 4, Sort.Direction.ASC, "reviewId");
+        Pageable nextPage = PageRequest.of(0, 4, Sort.Direction.ASC, "recommendationId");
         nextPage = testNextPage(nextPage, "[1001, 1002, 1003, 1004]", true);
         nextPage = testNextPage(nextPage, "[1005, 1006, 1007, 1008]", true);
         nextPage = testNextPage(nextPage, "[1009, 1010]", false);
     }
 
     private Pageable testNextPage(Pageable nextPage, String expectedIds, Boolean expectNextPage) {
-        Page<ReviewEntity> reviewPage = repository.findAll(nextPage);
-        Assertions.assertEquals(expectedIds, reviewPage.stream().map(ReviewEntity::getReviewId).toList().toString());
+        Page<RecommendationEntity> reviewPage = repository.findAll(nextPage);
+        Assertions.assertEquals(expectedIds, reviewPage.stream().map(RecommendationEntity::getRecommendationId).toList().toString());
         Assertions.assertEquals(expectNextPage, reviewPage.hasNext());
         return reviewPage.nextPageable();
     }

@@ -47,7 +47,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
                 ? List.of()
                 : recommendations
                 .stream()
-                .map(r -> new RecommendationSummary(r.getId(), r.getAuthor(), r.getRate(), r.getContent()))
+                .map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent()))
                 .toList();
 
         List<ReviewSummary> reviewSummaries = reviews == null
