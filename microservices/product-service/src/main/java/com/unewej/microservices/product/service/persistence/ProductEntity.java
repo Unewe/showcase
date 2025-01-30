@@ -22,6 +22,8 @@ public class ProductEntity {
     @SequenceGenerator(name = "product_id_gen", sequenceName = "product_id_seq")
     @Column(name = "id", nullable = false)
     private Long id;
+    @Version
+    private int version;
 
     @Size(max = 300)
     private String name;
@@ -32,6 +34,13 @@ public class ProductEntity {
     private Instant createdAt;
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    public ProductEntity(String name, int weight) {
+        this.name = name;
+        this.weight = weight;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
 
     @Override
     public final boolean equals(Object o) {

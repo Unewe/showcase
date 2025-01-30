@@ -5,6 +5,7 @@ CREATE TABLE products
     id        BIGINT                                        NOT NULL,
     name      VARCHAR(200)                                  NOT NULL,
     weight    INTEGER                                       NOT NULL,
+    version    INTEGER                                      NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()    NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_products PRIMARY KEY (id)
