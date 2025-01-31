@@ -1,5 +1,6 @@
 package com.unewej.microservices.product.service;
 
+import com.unewej.microservices.product.service.persistence.ProductRepository;
 import com.unewej.mutual.api.core.product.Product;
 import com.unewej.mutual.api.core.product.ProductService;
 import com.unewej.mutual.api.core.exceptions.InvalidInputException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
+    private final ProductRepository repository;
     private final ServiceUtil serviceUtil;
 
     @Override
