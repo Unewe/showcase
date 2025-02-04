@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class ProductAggregate {
-    private final int id;
+    private final long id;
     private final String name;
     private final int weight;
     private final List<RecommendationSummary> recommendations;
@@ -14,7 +14,7 @@ public class ProductAggregate {
     private final ServiceAddresses serviceAddresses;
 
     public ProductAggregate(
-            int id,
+            long id,
             String name,
             int weight,
             List<RecommendationSummary> recommendations,

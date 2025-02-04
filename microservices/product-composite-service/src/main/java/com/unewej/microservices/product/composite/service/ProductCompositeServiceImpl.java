@@ -39,7 +39,7 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
             List<Recommendation> recommendations,
             List<Review> reviews
     ) {
-        int productId = product.getId();
+        long productId = product.getId();
         String productName = product.getName();
         int productWeight = product.getWeight();
 

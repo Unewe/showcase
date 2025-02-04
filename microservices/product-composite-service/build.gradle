@@ -21,16 +21,23 @@ jar {
 	enabled = false
 }
 
+def springDocVersion = "2.8.3"
+def mapstructVersion = "1.6.3"
+def lombokVersion = "1.18.32"
+
 dependencies {
 	implementation project(":mutual:api")
 	implementation project(":mutual:util")
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.3'
+	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${springDocVersion}"
 
-	compileOnly 'org.projectlombok:lombok:1.18.20'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	// Lombok and Mapstruct
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'

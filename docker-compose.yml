@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
   product:
@@ -10,6 +10,9 @@ services:
           memory: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   recommendation:
     platform: linux/amd64
@@ -20,6 +23,9 @@ services:
           memory: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   review:
     platform: linux/amd64
@@ -30,6 +36,9 @@ services:
           memory: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   product-composite:
     platform: linux/amd64
@@ -43,3 +52,63 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: skeleton
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5430:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    command: >
+      postgres -c max_connections=1000
+               -c shared_buffers=256MB
+               -c effective_cache_size=768MB
+               -c maintenance_work_mem=64MB
+               -c checkpoint_completion_target=0.7
+               -c wal_buffers=16MB
+               -c default_statistics_target=100
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d skeleton" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+  mongodb:
+    image: mongo:7.0.7
+    volumes:
+      - mongodb:/data/db
+      - mongoconfig:/data/configdb
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "27027:27017"
+    command: mongod
+    healthcheck:
+      test: "mongostat -n 1"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  pgdata:
+    driver: local
+  mongodb:
+  mongoconfig:
