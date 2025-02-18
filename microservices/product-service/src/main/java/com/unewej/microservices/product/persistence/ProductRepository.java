@@ -1,4 +1,4 @@
-package com.unewej.microservices.product.service.persistence;
+package com.unewej.microservices.product.persistence;
 
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package com.unewej.microservices.recommendation;
 
-import com.unewej.microservices.recommendation.service.persistence.RecommendationEntity;
-import com.unewej.microservices.recommendation.service.persistence.RecommendationRepository;
+import com.unewej.microservices.recommendation.persistence.RecommendationEntity;
+import com.unewej.microservices.recommendation.persistence.RecommendationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

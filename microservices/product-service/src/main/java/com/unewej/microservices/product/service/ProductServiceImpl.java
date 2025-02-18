@@ -1,6 +1,6 @@
 package com.unewej.microservices.product.service;
 
-import com.unewej.microservices.product.service.persistence.ProductRepository;
+import com.unewej.microservices.product.persistence.ProductRepository;
 import com.unewej.mutual.api.core.product.Product;
 import com.unewej.mutual.api.core.product.ProductService;
 import com.unewej.mutual.api.core.exceptions.InvalidInputException;
@@ -8,6 +8,8 @@ import com.unewej.mutual.api.core.exceptions.NotFoundException;
 import com.unewej.mutual.util.http.ServiceUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Supplier;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,20 +18,35 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
+    private final ProductMapper mapper;
     private final ServiceUtil serviceUtil;
 
     @Override
-    public Product getProduct(int id) {
-        log.debug("/product returns the found product for product id={}", id);
+    public Product getProduct(long id) {
+        var result = mapper.map(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("No Product found for product: %d", id))));
+        result.setServiceAddress(serviceUtil.getServiceAddress());
+        log.debug("getProduct: found product with id: {}", id);
+        return result;
+    }
 
-        if (id < 1) {
-            throw new InvalidInputException("Invalid product id: " + id);
-        }
+    @Override
+    public Product createProduct(Product product) {
+        var entity = repository.save(mapper.map(product));
+        var result = mapper.map(entity);
+        result.setServiceAddress(serviceUtil.getServiceAddress());
+        log.debug("createProduct: created product with id: {}", product.getId());
+        return result;
+    }
 
-        if (id == 13) {
-            throw new NotFoundException("No product found for if: " + id);
-        }
+    @Override
+    public Product updateProduct(Product product) {
+        return createProduct(product);
+    }
 
-        return new Product(1, "Product", 1, serviceUtil.getServiceAddress());
+    @Override
+    public void deleteProduct(long id) {
+        log.debug("deleteProduct: delete product with id: {}", id);
+        repository.deleteById(id);
     }
 }

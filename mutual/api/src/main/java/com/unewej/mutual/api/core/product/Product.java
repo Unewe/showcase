@@ -2,12 +2,14 @@ package com.unewej.mutual.api.core.product;
 
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 public class Product {
-    private final long id;
-    private final String name;
-    private final int weight;
-    private final String serviceAddress;
+    private long id;
+    private String name;
+    private int weight;
+    private String serviceAddress;
 
     public Product() {
         this.id = 0;

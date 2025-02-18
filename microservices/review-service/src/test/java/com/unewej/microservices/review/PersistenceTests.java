@@ -1,7 +1,7 @@
 package com.unewej.microservices.review;
 
-import com.unewej.microservices.review.service.persistence.ReviewEntity;
-import com.unewej.microservices.review.service.persistence.ReviewRepository;
+import com.unewej.microservices.review.persistence.ReviewEntity;
+import com.unewej.microservices.review.persistence.ReviewRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.unewej.microservices.product;
 
-import com.unewej.microservices.product.service.persistence.ProductEntity;
-import com.unewej.microservices.product.service.persistence.ProductRepository;
+import com.unewej.microservices.product.persistence.ProductEntity;
+import com.unewej.microservices.product.persistence.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.util.stream.LongStream;
 @DataJpaTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PersistenceTests extends PostgresqlDbTestBase {
+public class PersistenceTests extends PostgresDbTestBase {
     @Autowired
     private ProductRepository repository;
 

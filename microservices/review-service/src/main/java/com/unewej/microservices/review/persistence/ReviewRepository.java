@@ -1,4 +1,4 @@
-package com.unewej.microservices.review.service.persistence;
+package com.unewej.microservices.review.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
