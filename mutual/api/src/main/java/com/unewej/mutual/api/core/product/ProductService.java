@@ -17,16 +17,16 @@ public interface ProductService {
      * @param product Product
      * @return Product
      */
-    @PostMapping(value = "/product", produces = "application/json")
-    Product createProduct(Product product);
+    @PostMapping(value = "/product", produces = "application/json", consumes = "application/json")
+    Product createProduct(@RequestBody Product product);
 
     /**
      * Usage: curl $HOST:$PORT/product
      * @param product Product
      * @return Product
      */
-    @PutMapping(value = "/product", produces = "application/json")
-    Product updateProduct(Product product);
+    @PutMapping(value = "/product", produces = "application/json", consumes = "application/json")
+    Product updateProduct(@RequestBody Product product);
 
     /**
      * Usage: curl $HOST:$PORT/product/id

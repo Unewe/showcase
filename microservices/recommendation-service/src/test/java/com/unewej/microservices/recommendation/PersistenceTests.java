@@ -27,7 +27,7 @@ public class PersistenceTests extends MongoDbTestBase {
     @BeforeEach
     public void setupDb() {
         repository.deleteAll();
-        RecommendationEntity entity = new RecommendationEntity(1, 1,"1", 1, "1");
+        RecommendationEntity entity = new RecommendationEntity(1, 1L,"1", 1, "1");
         savedEntity = repository.save(entity);
 
         assertEqualsRecommendation(entity, savedEntity);
@@ -43,7 +43,7 @@ public class PersistenceTests extends MongoDbTestBase {
 
     @Test
     public void create() {
-        RecommendationEntity entity = new RecommendationEntity(2, 2,"2", 2, "2");
+        RecommendationEntity entity = new RecommendationEntity(2, 2L,"2", 2, "2");
         repository.save(entity);
         RecommendationEntity saved = repository.findById(entity.getId()).get();
         assertEqualsRecommendation(entity, saved);
@@ -77,7 +77,7 @@ public class PersistenceTests extends MongoDbTestBase {
     @Test
     public void duplicateError() {
         Assertions.assertThrows(DuplicateKeyException.class, () -> {
-            var recommendation = new RecommendationEntity(savedEntity.getRecommendationId(), 1, "1", 1, "1");
+            var recommendation = new RecommendationEntity(savedEntity.getRecommendationId(), 1L, "1", 1, "1");
             repository.save(recommendation);
         });
     }
@@ -87,7 +87,7 @@ public class PersistenceTests extends MongoDbTestBase {
         repository.deleteAll();
 
         List<RecommendationEntity> newReviews = IntStream.rangeClosed(1001, 1010)
-                .mapToObj((i) -> new RecommendationEntity(i, 1, "1", 1, String.valueOf(i)))
+                .mapToObj((i) -> new RecommendationEntity(i, 1L, "1", 1, String.valueOf(i)))
                 .toList();
 
         repository.saveAll(newReviews);

@@ -27,7 +27,7 @@ public class PersistenceTests extends MongoDbTestBase {
     @BeforeEach
     public void setupDb() {
         repository.deleteAll();
-        ReviewEntity entity = new ReviewEntity(1, 1, "1", "1", "1");
+        ReviewEntity entity = new ReviewEntity(1, 1L, "1", "1", "1");
         savedEntity = repository.save(entity);
 
         assertEqualsReview(entity, savedEntity);
@@ -43,7 +43,7 @@ public class PersistenceTests extends MongoDbTestBase {
 
     @Test
     public void create() {
-        ReviewEntity entity = new ReviewEntity(2, 1, "2", "2", "2");
+        ReviewEntity entity = new ReviewEntity(2, 1L, "2", "2", "2");
         repository.save(entity);
         ReviewEntity saved = repository.findById(entity.getId()).get();
         assertEqualsReview(entity, saved);
@@ -77,7 +77,7 @@ public class PersistenceTests extends MongoDbTestBase {
     @Test
     public void duplicateError() {
         Assertions.assertThrows(DuplicateKeyException.class, () -> {
-            var review = new ReviewEntity(savedEntity.getReviewId(), 1, "1", "1", "1");
+            var review = new ReviewEntity(savedEntity.getReviewId(), 1L, "1", "1", "1");
             repository.save(review);
         });
     }
@@ -87,7 +87,7 @@ public class PersistenceTests extends MongoDbTestBase {
         repository.deleteAll();
 
         List<ReviewEntity> newReviews = IntStream.rangeClosed(1001, 1010)
-                .mapToObj((i) -> new ReviewEntity(i, 1, "1", "1", String.valueOf(i)))
+                .mapToObj((i) -> new ReviewEntity(i, 1L, "1", "1", String.valueOf(i)))
                 .toList();
 
         repository.saveAll(newReviews);

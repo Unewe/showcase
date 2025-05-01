@@ -31,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product createProduct(Product product) {
         var entity = repository.save(mapper.map(product));
         var result = mapper.map(entity);
@@ -40,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product updateProduct(Product product) {
         return createProduct(product);
     }

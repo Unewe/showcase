@@ -1,9 +1,9 @@
-FROM --platform=linux/x86_64 eclipse-temurin:17.0.10_7-jre-alpine as builder
+FROM arm64v8/eclipse-temurin:17-jre-ubi9-minimal as builder
 WORKDIR extracted
 ADD ./build/libs/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM eclipse-temurin:17.0.10_7-jre-alpine
+FROM arm64v8/eclipse-temurin:17-jre-ubi9-minimal
 WORKDIR application
 COPY --from=builder extracted/dependencies/ ./
 COPY --from=builder extracted/spring-boot-loader/ ./

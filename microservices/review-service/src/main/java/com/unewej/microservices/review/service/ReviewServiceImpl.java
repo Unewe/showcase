@@ -1,5 +1,6 @@
 package com.unewej.microservices.review.service;
 
+import com.unewej.microservices.review.persistence.ReviewRepository;
 import com.unewej.mutual.api.core.review.Review;
 import com.unewej.mutual.api.core.review.ReviewService;
 import com.unewej.mutual.api.core.exceptions.InvalidInputException;
@@ -8,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,23 +17,42 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ServiceUtil serviceUtil;
+    private final ReviewRepository repository;
+    private final ReviewMapper mapper;
 
     @Override
-    public List<Review> getReviews(int productId) {
-        log.debug("/product returns the found product for product id={}", productId);
+    public List<Review> getReviews(Long productId) {
 
         if (productId < 1) {
             throw new InvalidInputException("Invalid product id: " + productId);
         }
 
-        if (productId == 13) {
-            return new ArrayList<>();
-        }
+        var reviews = repository.findByProductId(productId).stream().map(mapper::map).toList();
+        reviews.forEach(value -> value.setServiceAddress(serviceUtil.getServiceAddress()));
+        log.debug("/product returns the found reviews for product id={}", productId);
+        return reviews;
+    }
 
-        return List.of(
-                new Review(1, productId, "Author 1", "Subject 1", "Content 1", serviceUtil.getServiceAddress()),
-                new Review(2, productId, "Author 2", "Subject 2", "Content 2", serviceUtil.getServiceAddress()),
-                new Review(3, productId, "Author 3", "Subject 3", "Content 3", serviceUtil.getServiceAddress())
-        );
+    @Override
+    public Review createReview(Review review) {
+        var entity = mapper.map(review);
+        var result = mapper.map(repository.save(entity));
+        result.setServiceAddress(serviceUtil.getServiceAddress());
+
+        return result;
+    }
+
+    @Override
+    public Review updateReview(Review review) {
+        var entity = mapper.map(review);
+        var result = mapper.map(repository.save(entity));
+        result.setServiceAddress(serviceUtil.getServiceAddress());
+
+        return result;
+    }
+
+    @Override
+    public void deleteReviews(Long productId) {
+        repository.deleteByProductId(productId);
     }
 }

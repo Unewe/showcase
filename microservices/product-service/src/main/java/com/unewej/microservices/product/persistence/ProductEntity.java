@@ -31,15 +31,13 @@ public class ProductEntity {
     @NotNull
     @ColumnDefault("now()")
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    private Instant updatedAt = Instant.now();
 
     public ProductEntity(String name, int weight) {
         this.name = name;
         this.weight = weight;
-        this.createdAt = Instant.now();
-        this.updatedAt = Instant.now();
     }
 
     @Override

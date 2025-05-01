@@ -18,10 +18,11 @@ import java.util.List;
 public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     private final ServiceUtil serviceUtil;
+    private final ProductAggregateMapper mapper;
     private final ProductCompositeIntegration integration;
 
     @Override
-    public ProductAggregate getProduct(int id) {
+    public ProductAggregate getProduct(long id) {
         var product = integration.getProduct(id);
 
         if (product == null) {
@@ -32,6 +33,37 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
         List<Review> reviews = integration.getReviews(id);
 
         return createProductAggregate(product, recommendations, reviews);
+    }
+
+    @Override
+    public ProductAggregate createProduct(ProductAggregate dto) {
+        var product = integration.createProduct(mapper.mapProduct(dto));
+        var reviews = dto.getReviews().stream()
+                .peek(value -> value.setProductId(product.getId()))
+                .map(value -> integration.createReview(mapper.mapReview(value))).toList();
+        var recommendations = dto.getRecommendations().stream()
+                .peek(value -> value.setProductId(product.getId()))
+                .map(value -> integration.createRecommendation(mapper.mapRecommendation(value))).toList();
+
+        return createProductAggregate(product, recommendations, reviews);
+    }
+
+    @Override
+    public ProductAggregate updateProduct(ProductAggregate dto) {
+        var product = integration.updateProduct(mapper.mapProduct(dto));
+        var reviews = dto.getReviews().stream()
+                .map(value -> integration.updateReview(mapper.mapReview(value))).toList();
+        var recommendations = dto.getRecommendations().stream()
+                .map(value -> integration.updateRecommendation(mapper.mapRecommendation(value))).toList();
+
+        return createProductAggregate(product, recommendations, reviews);
+    }
+
+    @Override
+    public void deleteProduct(long id) {
+        integration.deleteProduct(id);
+        integration.deleteRecommendations(id);
+        integration.deleteReviews(id);
     }
 
     private ProductAggregate createProductAggregate(
@@ -47,14 +79,14 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
                 ? List.of()
                 : recommendations
                 .stream()
-                .map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent()))
+                .map(mapper::mapRecommendation)
                 .toList();
 
         List<ReviewSummary> reviewSummaries = reviews == null
                 ? List.of()
                 : reviews
                 .stream()
-                .map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent()))
+                .map(mapper::mapReview)
                 .toList();
 
         String productAddress = product.getServiceAddress();

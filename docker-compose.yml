@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   product:
-    platform: linux/amd64
+    platform: linux/arm64/v8
     build: microservices/product-service
     deploy:
       resources:
@@ -15,7 +15,7 @@ services:
         condition: service_healthy
 
   recommendation:
-    platform: linux/amd64
+    platform: linux/arm64/v8
     build: microservices/recommendation-service
     deploy:
       resources:
@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   review:
-    platform: linux/amd64
+    platform: linux/arm64/v8
     build: microservices/review-service
     deploy:
       resources:
@@ -41,7 +41,7 @@ services:
         condition: service_healthy
 
   product-composite:
-    platform: linux/amd64
+    platform: linux/arm64/v8
     build: microservices/product-composite-service
     container_name: compose
     deploy:

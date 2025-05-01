@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface RecommendationRepository
         extends PagingAndSortingRepository<RecommendationEntity, String>, CrudRepository<RecommendationEntity, String> {
-    List<RecommendationEntity> findByProductId(int productId);
-    Optional<RecommendationEntity> findByRecommendationId(int recommendationId);
+    List<RecommendationEntity> findByProductId(Long productId);
+    void deleteByProductId(Long productId);
 }

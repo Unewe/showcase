@@ -1,7 +1,7 @@
 package com.unewej.mutual.api.core.recommendation;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.unewej.mutual.api.core.review.Review;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,5 +13,13 @@ public interface RecommendationService {
      * @return Recommendation, null if not exists
      */
     @GetMapping(value = "/recommendation", produces = "application/json")
-    List<Recommendation> getRecommendations(@RequestParam int productId);
+    List<Recommendation> getRecommendations(@RequestParam Long productId);
+    @PostMapping(value = "/recommendation", produces = "application/json", consumes = "application/json")
+    Recommendation createRecommendation(@RequestBody Recommendation review);
+
+    @PutMapping(value = "/recommendation", produces = "application/json", consumes = "application/json")
+    Recommendation updateRecommendation(@RequestBody Recommendation review);
+
+    @DeleteMapping(value = "/recommendation", produces = "application/json")
+    void deleteRecommendations(@RequestParam Long productId);
 }

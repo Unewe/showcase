@@ -1,27 +1,17 @@
 package com.unewej.mutual.api.core.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
-    private long id;
+    private Long id;
     private String name;
-    private int weight;
+    private int weight = 0;
     private String serviceAddress;
-
-    public Product() {
-        this.id = 0;
-        this.name = null;
-        this.weight = 0;
-        this.serviceAddress = null;
-    }
-
-    public Product(long id, String name, int weight, String serviceAddress) {
-        this.id = id;
-        this.name = name;
-        this.weight = weight;
-        this.serviceAddress = serviceAddress;
-    }
 }

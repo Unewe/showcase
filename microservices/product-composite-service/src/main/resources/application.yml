@@ -28,6 +28,9 @@ api:
 
   productComposite:
     getProductComposite.description: Returns the composite product of the specified product id.
+    postProductComposite.description: Creates the composite product.
+    putProductComposite.description: Updates the composite product.
+    deleteProductComposite.description: Deletes the composite product of the specified product id.
     notes: |
       Some notes...
 

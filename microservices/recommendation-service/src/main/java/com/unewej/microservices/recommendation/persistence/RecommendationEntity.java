@@ -14,14 +14,14 @@ public class RecommendationEntity {
     @Version
     private Integer version;
     @Indexed(unique = true)
-    private int recommendationId;
+    private Integer recommendationId;
     @Indexed()
-    private int productId;
+    private Long productId;
     private String author;
     private int rate;
     private String content;
 
-    public RecommendationEntity(int recommendationId, int productId, String author, int rate, String content) {
+    public RecommendationEntity(Integer recommendationId, Long productId, String author, int rate, String content) {
         this.recommendationId = recommendationId;
         this.productId = productId;
         this.author = author;

@@ -1,5 +1,6 @@
 package com.unewej.microservices.recommendation.service;
 
+import com.unewej.microservices.recommendation.persistence.RecommendationRepository;
 import com.unewej.mutual.api.core.recommendation.Recommendation;
 import com.unewej.mutual.api.core.recommendation.RecommendationService;
 import com.unewej.mutual.api.core.exceptions.InvalidInputException;
@@ -15,25 +16,35 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class RecommendationServiceImpl implements RecommendationService {
-
+    private final RecommendationRepository repository;
+    private final RecommendationMapper mapper;
     private final ServiceUtil serviceUtil;
 
     @Override
-    public List<Recommendation> getRecommendations(int productId) {
+    public List<Recommendation> getRecommendations(Long productId) {
+        var recommendations = repository.findByProductId(productId);
+        var result = recommendations.stream().map(mapper::map).toList();
+        result.forEach(value -> value.setServiceAddress(serviceUtil.getServiceAddress()));
         log.debug("/product returns the found product for product id={}", productId);
 
-        if (productId < 1) {
-            throw new InvalidInputException("Invalid product id: " + productId);
-        }
+        return result;
+    }
 
-        if (productId == 13) {
-            return new ArrayList<>();
-        }
+    @Override
+    public Recommendation createRecommendation(Recommendation recommendation) {
+        var result = mapper.map(repository.save(mapper.map(recommendation)));
+        result.setServiceAddress(serviceUtil.getServiceAddress());
 
-        return List.of(
-                new Recommendation(1, productId, "Author", 5, "qwer", serviceUtil.getServiceAddress()),
-                new Recommendation(2, productId, "Author", 4, "asdf", serviceUtil.getServiceAddress()),
-                new Recommendation(3, productId, "Author", 3, "zxcv", serviceUtil.getServiceAddress())
-        );
+        return result;
+    }
+
+    @Override
+    public Recommendation updateRecommendation(Recommendation recommendation) {
+        return createRecommendation(recommendation);
+    }
+
+    @Override
+    public void deleteRecommendations(Long productId) {
+        repository.deleteByProductId(productId);
     }
 }

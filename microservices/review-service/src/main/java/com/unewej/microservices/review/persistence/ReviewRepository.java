@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ReviewRepository
         extends PagingAndSortingRepository<ReviewEntity, String>, CrudRepository<ReviewEntity, String> {
-    List<ReviewEntity> findByProductId(int productId);
-    Optional<ReviewEntity> findByReviewId(int reviewId);
+    List<ReviewEntity> findByProductId(Long productId);
+    void deleteByProductId(Long productId);
 }

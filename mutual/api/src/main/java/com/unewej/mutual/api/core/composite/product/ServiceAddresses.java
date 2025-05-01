@@ -1,25 +1,15 @@
 package com.unewej.mutual.api.core.composite.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ServiceAddresses {
-    private final String composite;
-    private final String product;
-    private final String recommendation;
-    private final String review;
-
-    public ServiceAddresses() {
-        composite = null;
-        product = null;
-        recommendation = null;
-        review = null;
-    }
-
-    public ServiceAddresses(String composite, String product, String recommendation, String review) {
-        this.composite = composite;
-        this.product = product;
-        this.recommendation = recommendation;
-        this.review = review;
-    }
+    private String composite;
+    private String product;
+    private String recommendation;
+    private String review;
 }
