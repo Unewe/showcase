@@ -1,6 +1,7 @@
 package com.unewej.microservices.recommendation.service;
 
 import com.unewej.microservices.recommendation.persistence.RecommendationRepository;
+import com.unewej.mutual.api.core.exceptions.NotFoundException;
 import com.unewej.mutual.api.core.recommendation.Recommendation;
 import com.unewej.mutual.api.core.recommendation.RecommendationService;
 import com.unewej.mutual.api.core.exceptions.InvalidInputException;
@@ -40,7 +41,15 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public Recommendation updateRecommendation(Recommendation recommendation) {
-        return createRecommendation(recommendation);
+        var target = repository.findById(recommendation.getId())
+                .orElseThrow(() -> new NotFoundException(String.format("No Recommendation found for id: %s", recommendation.getId())));
+        target.setAuthor(recommendation.getAuthor());
+        target.setContent(recommendation.getContent());
+        target.setRate(recommendation.getRate());
+
+        var result = mapper.map(repository.save(target));
+        result.setServiceAddress(serviceUtil.getServiceAddress());
+        return result;
     }
 
     @Override

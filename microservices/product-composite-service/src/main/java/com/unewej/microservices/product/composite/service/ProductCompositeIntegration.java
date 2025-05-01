@@ -163,7 +163,7 @@ public class ProductCompositeIntegration {
             String url = recommendationServiceUrl;
             log.debug("Will call putRecommendation API on URL: {}", url);
             restTemplate.put(url, value, Recommendation.class);
-            log.debug("Update the recommendation with id: {}", value.getRecommendationId());
+            log.debug("Update the recommendation with id: {}", value.getId());
 
             return value;
         } catch (HttpClientErrorException e) {

@@ -33,8 +33,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Product createProduct(Product product) {
-        var entity = repository.save(mapper.map(product));
-        var result = mapper.map(entity);
+        var result = mapper.map(repository.save(mapper.map(product)));
         result.setServiceAddress(serviceUtil.getServiceAddress());
         log.debug("createProduct: created product with id: {}", product.getId());
         return result;
@@ -43,7 +42,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Product updateProduct(Product product) {
-        return createProduct(product);
+        var target = repository.findById(product.getId())
+                .orElseThrow(() -> new NotFoundException(String.format("No Product found for id: %s", product.getId())));
+        target.setWeight(product.getWeight());
+        target.setName(product.getName());
+
+        var result = mapper.map(repository.save(target));
+        result.setServiceAddress(serviceUtil.getServiceAddress());
+        log.debug("updateProduct: updated product with id: {}", product.getId());
+        return result;
     }
 
     @Override

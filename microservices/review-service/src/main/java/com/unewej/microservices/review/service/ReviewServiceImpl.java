@@ -1,6 +1,7 @@
 package com.unewej.microservices.review.service;
 
 import com.unewej.microservices.review.persistence.ReviewRepository;
+import com.unewej.mutual.api.core.exceptions.NotFoundException;
 import com.unewej.mutual.api.core.review.Review;
 import com.unewej.mutual.api.core.review.ReviewService;
 import com.unewej.mutual.api.core.exceptions.InvalidInputException;
@@ -44,8 +45,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review updateReview(Review review) {
-        var entity = mapper.map(review);
-        var result = mapper.map(repository.save(entity));
+        var target = repository.findById(review.getId())
+                .orElseThrow(() -> new NotFoundException(String.format("No Review found for id: %s", review.getId())));
+        target.setContent(review.getContent());
+        target.setSubject(review.getSubject());
+        target.setAuthor(review.getAuthor());
+        var result = mapper.map(repository.save(target));
         result.setServiceAddress(serviceUtil.getServiceAddress());
 
         return result;

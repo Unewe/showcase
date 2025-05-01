@@ -11,9 +11,6 @@ public interface RecommendationMapper {
     @Mappings({@Mapping(target = "serviceAddress", ignore = true)})
     Recommendation map (RecommendationEntity entity);
 
-    @Mappings({
-            @Mapping(target = "version", ignore = true),
-            @Mapping(target = "id", ignore = true),
-    })
+    @Mappings({@Mapping(target = "version", ignore = true)})
     RecommendationEntity map(Recommendation review);
 }
